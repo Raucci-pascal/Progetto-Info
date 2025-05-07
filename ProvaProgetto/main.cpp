@@ -1,5 +1,7 @@
 #include <iostream>
 #include<fstream>
+#include<vector>
+
 using namespace std;
 
 
@@ -26,25 +28,72 @@ void menu (char &scelta){
 }
 
 
+
+struct studente{
+
+    string codice;
+    string descrizione;
+    string cod_materia;
+    string data_materia;
+    string matricola;
+    string cognome;
+    string nome;
+
+
+};
+
+void inputVector(vector<studente> &s){
+
+    studente x;
+
+    ifstream fin("corsi_studenti.csv");
+
+    string labels;
+    getline(fin,labels); //lettura etichette
+
+
+    while(!fin.eof()){
+
+        getline(fin,x.codice,',');
+        getline(fin,x.descrizione,',');
+        getline(fin,x.cod_materia,',');
+        getline(fin,x.data_materia,',');
+        getline(fin,x.matricola,',');
+        getline(fin,x.cognome,',');
+        getline(fin,x.nome,',');
+
+        s.push_back(x);
+
+
+    }
+
+    fin.close();
+
+
+
+
+}
+
+
 int main()
 {
-   char scelta;
+
+    char scelta;
 
 
-   menu(scelta);
+    vector<studente> s;
+
+    menu(scelta);
 
 
-   while(scelta != 'X'){
+    while(scelta != 'X'){
 
 
         switch(scelta){
 
-            case 0:
+            case '0':
 
-
-
-
-
+                inputVector(s);
 
         }
 
