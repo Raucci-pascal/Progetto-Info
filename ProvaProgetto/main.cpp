@@ -60,10 +60,10 @@ void inputVector(vector<studente> &s){
         getline(fin,x.data_materia,',');
         getline(fin,x.matricola,',');
         getline(fin,x.cognome,',');
-        getline(fin,x.nome,',');
+        getline(fin,x.nome);
 
         s.push_back(x);
-
+        cout<<x.codice<<endl;
 
     }
 
@@ -86,7 +86,7 @@ int main()
     menu(scelta);
 
 
-    while(scelta != 'X'){
+    while(scelta != 'X' or 'x'){
 
 
         switch(scelta){
@@ -97,7 +97,7 @@ int main()
 
         }
 
-
+        menu(scelta);
 
    }
 
