@@ -163,7 +163,6 @@ int main()
             case '0':
 
                 mappaMatricola(s);
-                mappaCognome(stud);
 
                 break;
 
@@ -176,6 +175,10 @@ int main()
 
                 break;
 
+            case '2':
+
+                mappaCognome(stud);
+                break;
 
         }
 
