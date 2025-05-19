@@ -1,6 +1,7 @@
 #include <iostream>
 #include<fstream>
 #include<vector>
+#include<map>
 
 using namespace std;
 
@@ -11,7 +12,7 @@ void menu (char &scelta){
     cout<<"=======GESTIONE UNIVERSITARIA======="<<endl;
 
     cout<<"0. Carica dati da file"<<endl;
-    cout<<"1. Cerca dei corsi di uno studente ((matricola))"<<endl;
+    cout<<"1. Cerca dei corsi di uno studente (matricola)"<<endl;
     cout<<"2. Carica dati da file (cognome)"<<endl;
     cout<<"3. Elenca studenti iscritti ad un corso"<<endl;
     cout<<"4. Stampa dati esami di un corso"<<endl;
@@ -34,7 +35,7 @@ struct studente{
     string codice;
     string descrizione;
     string cod_materia;
-    string data_materia;
+    string descr_materia;
     string matricola;
     string cognome;
     string nome;
@@ -42,7 +43,7 @@ struct studente{
 
 };
 
-void inputVector(vector<studente> &s){
+/*void inputVector(vector<studente> &s){
 
     studente x;
 
@@ -74,6 +75,70 @@ void inputVector(vector<studente> &s){
 
 }
 
+*/
+
+void mappaMatricola(map<string,vector<string>> &matr){
+
+    ifstream fin("corsi_studenti.csv");
+
+    string labels;
+    getline(fin,labels); //lettura etichette
+
+
+    while(!fin.eof()){
+        studente x;
+        getline(fin,x.codice,',');
+        getline(fin,x.descrizione,',');
+        getline(fin,x.cod_materia,',');
+        getline(fin,x.descr_materia,',');
+        getline(fin,x.matricola,',');
+        getline(fin,x.cognome,',');
+        getline(fin,x.nome);
+
+        matr[x.matricola].push_back(x.codice);
+
+    }
+
+    fin.close();
+
+
+
+
+}
+
+void mappaCognome(map<string,vector<studente>> &cogno){
+
+
+
+    ifstream fin("corsi_studenti.csv");
+
+    string labels;
+    getline(fin,labels); //lettura etichette
+
+
+    while(!fin.eof()){
+        studente x;
+        getline(fin,x.codice,',');
+        getline(fin,x.descrizione,',');
+        getline(fin,x.cod_materia,',');
+        getline(fin,x.descr_materia,',');
+        getline(fin,x.matricola,',');
+        getline(fin,x.cognome,',');
+        getline(fin,x.nome);
+
+        cogno[x.cognome].push_back(x);
+
+    }
+
+    fin.close();
+
+
+
+
+}
+
+
+
 
 int main()
 {
@@ -81,7 +146,11 @@ int main()
     char scelta;
 
 
-    vector<studente> s;
+    map<string,vector<string>>s;
+
+    map<string,vector<studente>> stud;
+
+    string matricola;
 
     menu(scelta);
 
@@ -93,7 +162,20 @@ int main()
 
             case '0':
 
-                inputVector(s);
+                mappaMatricola(s);
+                mappaCognome(stud);
+
+                break;
+
+            case '1':
+
+                cout<<"Inserisci la matricola"<<endl;
+                cin>>matricola;
+
+                cout<<s[matricola][0]<<endl;
+
+                break;
+
 
         }
 
