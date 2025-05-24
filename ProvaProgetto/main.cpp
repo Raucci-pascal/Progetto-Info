@@ -51,7 +51,8 @@ struct s_nome{
 
 };
 
-void caricamentoMappe(map<string,vector<string>> &matr,map<string,vector<string>> &cogno, map<string, vector<s_nome>> &name){
+
+void caricamentoMappe(map<string,string> &matr,map<string,string> &cogno, map<string, vector<s_nome>> &name, map<string,string> &mat){
 
     ifstream fin("corsi_studenti.csv");
 
@@ -69,8 +70,10 @@ void caricamentoMappe(map<string,vector<string>> &matr,map<string,vector<string>
         getline(fin,x.cognome,',');
         getline(fin,x.nome);
 
-        matr[x.matricola].push_back(x.codice);
-        cogno[x.cognome].push_back(x.codice);
+        matr[x.matricola]=x.codice; //mappa matricola-codice corso
+
+
+        cogno[x.cognome] = x.codice; //mappa cognome-codice
 
         s_nome y;
 
@@ -79,9 +82,11 @@ void caricamentoMappe(map<string,vector<string>> &matr,map<string,vector<string>
 
         vector<s_nome> tmp = name[x.codice];
 
-        //ctmp.size()
+        name[x.codice].push_back(y); //mappa codice corso-studente
 
-        name[x.codice].push_back(y);
+
+        mat[x.cod_materia] = x.descr_materia; //mappa codice materia-desrizione materia
+
 
 
     }
@@ -100,11 +105,14 @@ int main()
     char scelta;
 
 
-    map<string,vector<string>>s;
+    map<string,string>s;
 
-    map<string,vector<string>> stud;
+    map<string,string> stud;
 
     map<string, vector<s_nome>>name;
+
+    map<string,string> mat;
+
 
     string matricola;
 
@@ -118,7 +126,7 @@ int main()
 
             case '0':
 
-                caricamentoMappe(s,stud,name);
+                caricamentoMappe(s,stud,name,mat);
 
                 break;
 
@@ -127,7 +135,7 @@ int main()
                 cout<<"Inserisci la matricola"<<endl;
                 cin>>matricola;
 
-                cout<<s[matricola][0]<<endl;
+                cout<<s[matricola]<<endl;
 
                 break;
 
@@ -138,7 +146,7 @@ int main()
                 cout<<"Cognome:"<<endl;
                 cin>>surname;
 
-                cout<<stud[surname][0]<<endl;
+                cout<<stud[surname]<<endl;
 
                 break;
             }
@@ -158,16 +166,48 @@ int main()
 
                 break;
             }
+
+
+            case '4':{
+
+                string mater;
+
+                cout<<"Materia:"<<endl;
+                cin>>mater;
+
+
+                cout<<mat[mater]<<endl;
+
+                break;
+            }
+
+            case '5': {
+
+                    string corsoo;
+
+                    cout<<"Corso:"<<endl;
+                    cin>>corsoo;
+
+                    int cont = 0;
+
+                    for(auto elem : name[corsoo]) cont++;
+
+                        cout<<cont<<endl;
+
+                    break;
+
+
+            }
+
+
+
+
+
+            }
+
+            menu(scelta);
         }
-
-
-
-
-
-        menu(scelta);
 
    }
 
 
-
-}
