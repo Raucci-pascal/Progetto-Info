@@ -13,10 +13,10 @@ void menu (char &scelta){
 
     cout<<"0. Carica dati da file"<<endl;
     cout<<"1. Cerca dei corsi di uno studente (matricola)"<<endl;
-    cout<<"2. Carica dati da file (cognome)"<<endl;
+    cout<<"2. Cerca dei corsi di uno studente (cognome)"<<endl;
     cout<<"3. Elenca studenti iscritti ad un corso"<<endl;
     cout<<"4. Stampa dati esami di un corso"<<endl;
-    cout<<"5. Numero di srudenti per corso"<<endl;
+    cout<<"5. Numero di studenti per corso"<<endl;
     cout<<"6. Numero di materie per corso"<<endl;
     cout<<"7. Cerca materie per descrizione"<<endl;
     cout<<"8. Inserisci nuovo studente"<<endl;
@@ -43,41 +43,15 @@ struct studente{
 
 };
 
-/*void inputVector(vector<studente> &s){
 
-    studente x;
+struct s_nome{
 
-    ifstream fin("corsi_studenti.csv");
+    string nome;
+    string cognome;
 
-    string labels;
-    getline(fin,labels); //lettura etichette
+};
 
-
-    while(!fin.eof()){
-
-        getline(fin,x.codice,',');
-        getline(fin,x.descrizione,',');
-        getline(fin,x.cod_materia,',');
-        getline(fin,x.data_materia,',');
-        getline(fin,x.matricola,',');
-        getline(fin,x.cognome,',');
-        getline(fin,x.nome);
-
-        s.push_back(x);
-        cout<<x.codice<<endl;
-
-    }
-
-    fin.close();
-
-
-
-
-}
-
-*/
-
-void mappaMatricola(map<string,vector<string>> &matr){
+void caricamentoMappe(map<string,vector<string>> &matr,map<string,vector<string>> &cogno, map<string, vector<s_nome>> &name){
 
     ifstream fin("corsi_studenti.csv");
 
@@ -96,6 +70,19 @@ void mappaMatricola(map<string,vector<string>> &matr){
         getline(fin,x.nome);
 
         matr[x.matricola].push_back(x.codice);
+        cogno[x.cognome].push_back(x.codice);
+
+        s_nome y;
+
+        y.nome = x.nome;
+        y.cognome = x.cognome;
+
+        vector<s_nome> tmp = name[x.codice];
+
+        //ctmp.size()
+
+        name[x.codice].push_back(y);
+
 
     }
 
@@ -105,39 +92,6 @@ void mappaMatricola(map<string,vector<string>> &matr){
 
 
 }
-
-void mappaCognome(map<string,vector<studente>> &cogno){
-
-
-
-    ifstream fin("corsi_studenti.csv");
-
-    string labels;
-    getline(fin,labels); //lettura etichette
-
-
-    while(!fin.eof()){
-        studente x;
-        getline(fin,x.codice,',');
-        getline(fin,x.descrizione,',');
-        getline(fin,x.cod_materia,',');
-        getline(fin,x.descr_materia,',');
-        getline(fin,x.matricola,',');
-        getline(fin,x.cognome,',');
-        getline(fin,x.nome);
-
-        cogno[x.cognome].push_back(x);
-
-    }
-
-    fin.close();
-
-
-
-
-}
-
-
 
 
 int main()
@@ -148,7 +102,9 @@ int main()
 
     map<string,vector<string>>s;
 
-    map<string,vector<studente>> stud;
+    map<string,vector<string>> stud;
+
+    map<string, vector<s_nome>>name;
 
     string matricola;
 
@@ -162,7 +118,7 @@ int main()
 
             case '0':
 
-                mappaMatricola(s);
+                caricamentoMappe(s,stud,name);
 
                 break;
 
@@ -175,12 +131,38 @@ int main()
 
                 break;
 
-            case '2':
+            case '2':{
 
-                mappaCognome(stud);
+                string surname;
+
+                cout<<"Cognome:"<<endl;
+                cin>>surname;
+
+                cout<<stud[surname][0]<<endl;
+
                 break;
+            }
 
+            case '3':{
+
+                string cors;
+
+                cout<<"Corso:"<<endl;
+                cin>>cors;
+
+                for(auto elem : name[cors]){
+
+                    cout<<elem.nome<<" "<<elem.cognome<<endl;
+
+                }
+
+                break;
+            }
         }
+
+
+
+
 
         menu(scelta);
 
